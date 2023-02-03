@@ -1,0 +1,396 @@
+{
+	"info": {
+		"_postman_id": "9ceba130-7718-415a-bcb7-bf510d464441",
+		"name": "GitHub_APINew",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25515415"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "GET_Single_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check status code\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status code 200 second example\", function(){\r",
+									"    pm.expect(pm.response.code).equals(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Status check\", function(){\r",
+									"    pm.expect(pm.response.status).equals(\"OK\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check issue number\", function(){\r",
+									"    const body = pm.response.json();\r",
+									"\r",
+									"    pm.expect(body.number, \"Number property\").to.be.equal(1);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues/1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_All_Issues",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check if response if an array of issues\", function() {\r",
+									"    const body = pm.response.json();\r",
+									"    console.log(\"BODY\", body);\r",
+									"    pm.expect(Array.isArray(body));\r",
+									"\r",
+									"    for(let item of body){\r",
+									"        pm.expect(typeof(item.title)).equals(\"string\");\r",
+									"        pm.expect(typeof(item.number)).equals(\"number\");\r",
+									"        pm.expect(item.number, \"Issue number property\").is.greaterThan(0);\r",
+									"    }\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_Single_Issue_Labels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues/1/labels",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues",
+								"1",
+								"labels"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Create_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check issue number and title\", function(){\r",
+									"    let body= pm.response.json();\r",
+									"\r",
+									"    pm.expect(body.number, \"Number property\").greaterThan(0);\r",
+									"    pm.expect(body.title, \"Title property\").equal(\"Fifth issue\");\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Fifth issue\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Issue_With_Labels",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Issue with labels\",\r\n    \"labels\":[\"bug\", \"priority: critical\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Issue_Misisng_Title",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Forth issue\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/Postman1/issues",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"Postman1",
+								"issues"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Repos",
+			"item": [
+				{
+					"name": "GET_All_Repos Copy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "katerinamladenova",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/users/katerinamladenova/repos",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"users",
+								"katerinamladenova",
+								"repos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET_Single_Repo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"check repo name\", function(){\r",
+									"    const body = pm.response.json();\r",
+									"    pm.expect(body.name, \"Name property\").equals(\"Postman1\");\r",
+									"\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "katerinamladenova",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "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",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.github.com/repos/katerinamladenova/postman1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"katerinamladenova",
+								"postman1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
